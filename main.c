@@ -127,7 +127,7 @@ void update_game(GameState* state) {
     for(int j = 0; j < current_level->count; j++) {
         int obs_x = state->obstacle_group_x + j * OBSTACLE_SPACING;
         int obs_y = GROUND_LEVEL - current_level->heights[j];
-        int obs_height = current_level->heights[j];
+        // Убрано неиспользуемое объявление obs_height
         
         // Проверка видимости препятствия
         if(obs_x + OBSTACLE_WIDTH > 0 && obs_x < SCREEN_WIDTH) {
@@ -145,7 +145,8 @@ void update_game(GameState* state) {
     if(state->obstacle_group_x + OBSTACLE_WIDTH * clearance + 
        OBSTACLE_SPACING * (current_level->count - 1) < 0) {
         state->current_level_index++;
-        if(state->current_level_index >= LEVEL_COUNT) {
+        // Исправлено сравнение с unsigned
+        if(state->current_level_index >= (int)LEVEL_COUNT) {
             state->current_level_index = 0;
         }
         state->obstacle_group_x = level_data[state->current_level_index].x;
@@ -173,6 +174,16 @@ void update_game(GameState* state) {
     }
 }
 
+// Рисование треугольника (препятствия)
+void draw_obstacle(Canvas* canvas, int x, int y, int width, int height) {
+    // Рисуем заполненный треугольник
+    for(int i = 0; i < height; i++) {
+        int line_width = width * (height - i) / height;
+        int start_x = x + (width - line_width) / 2;
+        canvas_draw_line(canvas, start_x, y + i, start_x + line_width, y + i);
+    }
+}
+
 // Рендеринг игры
 void render_game(Canvas* canvas, GameState* state) {
     canvas_clear(canvas);
@@ -191,9 +202,8 @@ void render_game(Canvas* canvas, GameState* state) {
         int obs_height = current_level->heights[j];
         
         if(obs_x + OBSTACLE_WIDTH > 0 && obs_x < SCREEN_WIDTH) {
-            canvas_draw_triangle(canvas, obs_x, obs_y + obs_height, 
-                                obs_x + OBSTACLE_WIDTH/2, obs_y,
-                                obs_x + OBSTACLE_WIDTH, obs_y + obs_height);
+            // Используем нашу функцию для рисования треугольника
+            draw_obstacle(canvas, obs_x, obs_y, OBSTACLE_WIDTH, obs_height);
         }
     }
     
