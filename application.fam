@@ -1,0 +1,16 @@
+App(
+    appid="geodash_flip",
+    name="Geometry FlipDash",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="jump_game_app",
+    cdefines=["APP_BOILERPLATE"],
+    requires=[
+        "gui"
+    ],
+    stack_size=2 * 1024,
+    order=10,
+    fap_icon="template.png",
+    fap_icon_assets="images",
+    fap_category="Games",
+    fap_version="1.0",
+)
