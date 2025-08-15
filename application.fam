@@ -9,7 +9,7 @@ App(
     ],
     stack_size=2 * 1024,
     order=10,
-    fap_icon="template.png",
+    fap_icon="boilerplate_10px.png",
     fap_icon_assets="images",
     fap_category="Games",
     fap_version="1.0",
